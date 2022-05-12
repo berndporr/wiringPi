@@ -54,9 +54,6 @@
 #include "max5322.h"
 #include "ads1115.h"
 #include "sn3218.h"
-#include "drcSerial.h"
-#include "drcNet.h"
-#include "../wiringPiD/drcNetCmd.h"
 #include "pseudoPins.h"
 #include "bmp180.h"
 #include "htu21d.h"
@@ -726,105 +723,6 @@ static int doExtensionMcp3422 (char *progName, int pinBase, char *params)
 
 
 /*
- * doExtensionDrcS:
- *	Interface to a DRC Serial system
- *	drcs:base:pins:serialPort:baud
- *********************************************************************************
- */
-
-static int doExtensionDrcS (char *progName, int pinBase, char *params)
-{
-  char *port ;
-  int pins, baud ;
-
-  if ((params = extractInt (progName, params, &pins)) == NULL)
-    return FALSE ;
-
-  if ((pins < 1) || (pins > 1000))
-  {
-    verbError ("%s: pins (%d) out of range (2-1000)", progName, pins) ;
-    return FALSE ;
-  }
-  
-  if ((params = extractStr (progName, params, &port)) == NULL)
-    return FALSE ;
-
-  if (strlen (port) == 0)
-  {
-    verbError ("%s: serial port device name required", progName) ;
-    return FALSE ;
-  }
-
-  if ((params = extractInt (progName, params, &baud)) == NULL)
-    return FALSE ;
-
-  if ((baud < 1) || (baud > 4000000))
-  {
-    verbError ("%s: baud rate (%d) out of range", progName, baud) ;
-    return FALSE ;
-  }
-
-  drcSetupSerial (pinBase, pins, port, baud) ;
-
-  return TRUE ;
-}
-
-
-/*
- * doExtensionDrcNet:
- *	Interface to a DRC Network system
- *	drcn:base:pins:ipAddress:port:password
- *********************************************************************************
- */
-
-static int doExtensionDrcNet (char *progName, int pinBase, char *params)
-{
-  int pins ;
-  char *ipAddress, *port, *password ;
-  char pPort [1024] ;
-
-  if ((params = extractInt (progName, params, &pins)) == NULL)
-    return FALSE ;
-
-  if ((pins < 1) || (pins > 1000))
-  {
-    verbError ("%s: pins (%d) out of range (2-1000)", progName, pins) ;
-    return FALSE ;
-  }
-  
-  if ((params = extractStr (progName, params, &ipAddress)) == NULL)
-    return FALSE ;
-
-  if (strlen (ipAddress) == 0)
-  {
-    verbError ("%s: ipAddress required", progName) ;
-    return FALSE ;
-  }
-
-  if ((params = extractStr (progName, params, &port)) == NULL)
-    return FALSE ;
-
-  if (strlen (port) == 0)
-  {
-    sprintf (pPort, "%d", DEFAULT_SERVER_PORT) ;
-    port = pPort ;
-  }
-
-  if ((params = extractStr (progName, params, &password)) == NULL)
-    return FALSE ;
-
-  if (strlen (password) == 0)
-  {
-    verbError ("%s: password required", progName) ;
-    return FALSE ;
-  }
-
-  return drcSetupNet (pinBase, pins, ipAddress, port, password) ;
-}
-
-
-
-/*
  * Function list
  *********************************************************************************
  */
@@ -852,8 +750,6 @@ static struct extensionFunctionStruct extensionFunctions [] =
   { "ads1115",		&doExtensionAds1115	},
   { "max5322",		&doExtensionMax5322	},
   { "sn3218",		&doExtensionSn3218	},
-  { "drcs",		&doExtensionDrcS	},
-  { "drcn",		&doExtensionDrcNet	},
   { NULL,		NULL		 	},
 } ;
 
