@@ -1,3 +1,3 @@
 # wiringPi
 
-Just now that's a 1:1 backup of the final version released: 2.50
+backup of the orig library and some hacks to get it (still compile)
