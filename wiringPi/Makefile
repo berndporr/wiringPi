@@ -57,10 +57,7 @@ SRC	=	wiringPi.c						\
 		mcp3002.c mcp3004.c mcp4802.c mcp3422.c			\
 		max31855.c max5322.c ads1115.c				\
 		sn3218.c						\
-		bmp180.c htu21d.c ds18b20.c rht03.c			\
-		drcSerial.c drcNet.c					\
-		pseudoPins.c						\
-		wpiExtensions.c
+		bmp180.c htu21d.c ds18b20.c rht03.c
 
 HEADERS =	$(shell ls *.h)
 
@@ -155,10 +152,9 @@ sn3218.o: wiringPi.h wiringPiI2C.h sn3218.h
 bmp180.o: wiringPi.h wiringPiI2C.h bmp180.h
 htu21d.o: wiringPi.h wiringPiI2C.h htu21d.h
 ds18b20.o: wiringPi.h ds18b20.h
-drcSerial.o: wiringPi.h wiringSerial.h drcSerial.h
 pseudoPins.o: wiringPi.h pseudoPins.h
 wpiExtensions.o: wiringPi.h mcp23008.h mcp23016.h mcp23017.h mcp23s08.h
 wpiExtensions.o: mcp23s17.h sr595.h pcf8574.h pcf8591.h mcp3002.h mcp3004.h
 wpiExtensions.o: mcp4802.h mcp3422.h max31855.h max5322.h ads1115.h sn3218.h
-wpiExtensions.o: drcSerial.h pseudoPins.h bmp180.h htu21d.h ds18b20.h
+wpiExtensions.o: pseudoPins.h bmp180.h htu21d.h ds18b20.h
 wpiExtensions.o: wpiExtensions.h
